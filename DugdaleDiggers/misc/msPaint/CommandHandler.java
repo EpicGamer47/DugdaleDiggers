@@ -11,12 +11,13 @@ import processing.core.PGraphics;
 public abstract class CommandHandler {
 	
 	private int x1, x2, y1, y2;
-	private PGraphics pg;
+	private PGraphics currentField;
 	private PApplet parent;
+	private Deque<PGraphics> history;
 
 	/**
 	 * Takes in a PApplet and a bounding box for the paint area.
-	 * @param parent The PApplet to draw on
+	 * @param parent The Processing Applet to draw on
 	 * @param x1 The x-value of the top left corner
 	 * @param y1 The y-value of the top left corner
 	 * @param x2 The x-value of the bottom right corner
@@ -29,17 +30,32 @@ public abstract class CommandHandler {
 		this.x2 = x2;
 		this.y2 = y2;
 		
-		pg = parent.createGraphics(x2 - x1, y2 - y1); // no way to call it statically
-		
+		currentField = parent.createGraphics(x2 - x1, y2 - y1); // no way to call it statically
 	}
 	
 	/**
-	 * Draws the current image onto the PApplet, including commands in mid-execution
+	 * Draws the current image onto the parent, including commands in mid-execution
 	 */
 	public abstract void draw();
 	
 	/**
-	 * Draws the current image onto the PApplet
+	 * Finalizes the current command.
+	 * Call when command is done.
 	 */
-	public abstract void draw();
+	public abstract void finalize();
+	
+	/**
+	 * Saves the draw area to the output file
+	 */
+	public abstract void save(String path);
+	
+	/**
+	 * Undos the last command.
+	 */
+	public abstract void undo();
+	
+	/**
+	 * Redos the last undo.
+	 */
+	public abstract void redo();
 }
