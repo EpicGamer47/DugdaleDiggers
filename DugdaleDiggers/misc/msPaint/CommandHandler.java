@@ -1,7 +1,9 @@
 package msPaint;
 
+import java.awt.geom.Point2D;
 import java.io.File;
-import java.util.Deque;
+import java.security.InvalidParameterException;
+import java.util.ArrayDeque;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -17,7 +19,8 @@ public abstract class CommandHandler {
 	private PGraphics currentField;
 	private PGraphics currentCommand;
 	private PApplet parent;
-	private Deque<PGraphics> history;
+	private ArrayDeque<PGraphics> history;
+	private ArrayDeque<PGraphics> future;
 
 	/**
 	 * Takes in a PApplet and a bounding box for the paint area.
@@ -40,13 +43,44 @@ public abstract class CommandHandler {
 	/**
 	 * Draws the current image onto the parent, including commands in mid-execution
 	 */
-	public abstract void draw();
+	public void draw() {
+		
+	}
+	
+	/**
+	 * Starts a command.
+	 */
+	public void command(String command, Point2D point) {
+		switch (command) {
+		case "undo":
+		
+		default:
+			throw new InvalidParameterException("\"" + command + "\" is not a valid command.");
+		}
+	}
+	
+	/**
+	 * 
+	 * @param point the click
+	 */
+	public void update(Point2D point) {
+		switch (command) {
+		case "undo":
+		
+		default:
+			throw new InvalidParameterException("\"" + command + "\" is not a valid command.");
+		}
+	}
 	
 	/**
 	 * Finalizes the current command.
 	 * Call when command is done.
 	 */
-	public abstract void finalize();
+	public void finalize() {
+		currentField.image(currentCommand, 0, 0);
+		history.push((PGraphics) currentField.copy());
+		future.clear();
+	}
 	
 	/**
 	 * Saves the draw area to the output file
@@ -63,11 +97,31 @@ public abstract class CommandHandler {
 	
 	/**
 	 * Undos the last command.
+	 * @return true if the the display changed, false otherwise
 	 */
-	public abstract void undo();
+	private boolean undo() {
+		if (history.isEmpty()) {
+			return false;
+		}
+		
+		future.push(currentField);
+		currentField = history.pop();
+		
+		return true;
+	}
 	
 	/**
 	 * Redos the last undo.
+	 * @return true if the the display changed, false otherwise
 	 */
-	public abstract void redo();
+	private boolean redo() {
+		if (future.isEmpty()) {
+			return false;
+		}
+		
+		history.push(currentField);
+		currentField = future.pop();
+		
+		return true;
+	}
 }
