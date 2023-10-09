@@ -55,6 +55,10 @@ public abstract class CommandHandler {
 		parent.selectOutput("Save to file: ", "saveCallback");
 	}
 	
+	/**
+	 * Only exists as a callback for save method (dont use this one)
+	 * @param selection
+	 */
 	public void saveCallback(File selection) {
 		if (selection == null)
 			return;
