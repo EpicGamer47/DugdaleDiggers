@@ -9,11 +9,11 @@ public class Window extends PApplet {
 	CommandHandler h;
 	
 	public static void main(String[] args) {
-		PApplet.main("paint.Window");
+		PApplet.main("msPaint.Window");
 	}
 	
 	public void setup() {
-		img = createImage(1600, 800, RGB);
+		
 	}
 	
 	public void settings() {
