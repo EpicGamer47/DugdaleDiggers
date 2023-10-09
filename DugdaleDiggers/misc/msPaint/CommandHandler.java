@@ -1,5 +1,8 @@
 package msPaint;
 
+import java.io.File;
+import java.util.Deque;
+
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
@@ -12,6 +15,7 @@ public abstract class CommandHandler {
 	
 	private int x1, x2, y1, y2;
 	private PGraphics currentField;
+	private PGraphics currentCommand;
 	private PApplet parent;
 	private Deque<PGraphics> history;
 
@@ -47,7 +51,15 @@ public abstract class CommandHandler {
 	/**
 	 * Saves the draw area to the output file
 	 */
-	public abstract void save(String path);
+	public void save(String path) {
+		parent.selectOutput("Save to file: ", "saveCallback");
+	}
+	
+	public void saveCallback(File selection) {
+		if (selection == null)
+			return;
+		currentField.save(selection.getAbsolutePath());
+	}
 	
 	/**
 	 * Undos the last command.
