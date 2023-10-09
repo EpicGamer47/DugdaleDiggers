@@ -5,15 +5,15 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public class Window extends PApplet {
-
-	PImage img;
+	
+	CommandHandler h;
 	
 	public static void main(String[] args) {
 		PApplet.main("paint.Window");
 	}
 	
 	public void setup() {
-		
+		img = createImage(1600, 800, RGB);
 	}
 	
 	public void settings() {
@@ -32,23 +32,10 @@ public class Window extends PApplet {
 	}
 	
 	public void mouseClicked() {
-		saveToImage();
+		
 	}
 	
 	private boolean inDrawingBounds(int x, int y) {
 		return x >= 0 && x <= 1600 && y >= 100 && y <= 900;
-	}
-	
-	private void saveToImage() {
-		img = createImage(1600, 800, RGB);
-		PImage temp = copy();
-		img.copy(temp, 0, 100, 1600, 800, 0, 0, 1600, 800);
-		selectOutput("Save to file: ", "saveCallback");
-	}
-	
-	public void saveCallback(File selection) {
-		if (selection == null)
-			return;
-		img.save(selection.getAbsolutePath());
 	}
 }
