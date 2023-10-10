@@ -13,7 +13,6 @@ public class Slider {
 	private float w;
 	
 	private float bX;
-	private static final float BUTTON_Y = 50;
 	private static final float BUTTON_R = 25;
 	
 	private double min;
@@ -35,7 +34,14 @@ public class Slider {
 	 * Draws the slider on screen.
 	 */
 	public void draw() {
-		
+		//Line
+		a.strokeWeight(5);
+		a.stroke(0);
+		a.line(x, y, x + w, y);
+		//Slider circle
+		a.fill(255);
+		a.strokeWeight(1);
+		a.circle(bX, y, BUTTON_R);
 	}
 	
 	/**
@@ -44,6 +50,18 @@ public class Slider {
 	 */
 	public double getValue() {
 		return value;
+	}
+	
+	/**
+	 * Changes the value of the slider and updates it visually. Throws an exception if new value is outside the range of min-max.
+	 * @param val The new value.
+	 */
+	public void setValue(double val) {
+		if (val < min || val > max) {
+			throw new IllegalArgumentException("Value outside of range of slider.");
+		}
+		value = val;
+		bX = (float) (getScalePerPixel() * value);
 	}
 	
 	/**
@@ -71,7 +89,7 @@ public class Slider {
 	}
 	
 	private boolean inSliderButtonBounds(int mouseX, int mouseY) {
-		return PApplet.dist(mouseX, mouseY, (float) (value * getScalePerPixel() + x), y + 25) <= 25;
+		return PApplet.dist(mouseX, mouseY, bX, y) <= BUTTON_R;
 	}
 	
 	/**
@@ -81,6 +99,6 @@ public class Slider {
 		if (!inSliderButtonBounds(mouseX, mouseY) || mouseX < x || mouseX > x + w)
 			return;
 		bX = mouseX;
-		value = (mouseX - x) * getScalePerPixel();
+		value = (mouseX - x) * getScalePerPixel() + min;
 	}
 }

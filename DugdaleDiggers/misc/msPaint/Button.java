@@ -23,7 +23,7 @@ public abstract class Button {
 	 * Draws the button.
 	 */
 	public void draw() {
-		parent.noFill();
+		parent.fill(255);
 		parent.stroke(0);
 		parent.strokeWeight(1);
 		parent.rect(x1, y1, w, h);

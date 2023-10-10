@@ -1,8 +1,6 @@
 package msPaint;
 
-import java.io.File;
 import processing.core.PApplet;
-import processing.core.PImage;
 
 public class Window extends PApplet {
 	
@@ -13,7 +11,6 @@ public class Window extends PApplet {
 	}
 	
 	public void setup() {
-		
 	}
 	
 	public void settings() {
@@ -32,6 +29,10 @@ public class Window extends PApplet {
 	}
 	
 	public void mouseClicked() {
+		
+	}
+	
+	public void mouseDragged() {
 		
 	}
 	
