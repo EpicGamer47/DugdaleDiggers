@@ -3,11 +3,11 @@ package msPaint;
 import processing.core.PApplet;
 
 /**
- * Button w/ customizeable drawing & functionality.
+ * Button w/ customizable drawing & functionality.
  */
 public abstract class Button {
-	private PApplet parent;
-	private float x1, y1, w, h;
+	protected PApplet parent;
+	protected float x1, y1, w, h;
 
 	public Button(PApplet parent, float x1, float y1, float w, float h) {
 		this.parent = parent;

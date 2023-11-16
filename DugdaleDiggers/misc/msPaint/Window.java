@@ -6,11 +6,18 @@ public class Window extends PApplet {
 	
 	CommandHandler h;
 	
+	Button[] buttons;
+	
+	Slider[] sliders;
+	
+	ToggleSwitch[] toggles;
+	
 	public static void main(String[] args) {
 		PApplet.main("msPaint.Window");
 	}
 	
 	public void setup() {
+		
 	}
 	
 	public void settings() {
@@ -18,7 +25,7 @@ public class Window extends PApplet {
 	}
 	
 	public void draw() {
-//		background(255, 255, 255);
+		background(255, 255, 255);
 		drawToolbar();
 	}
 
@@ -33,6 +40,10 @@ public class Window extends PApplet {
 	}
 	
 	public void mouseDragged() {
+		
+	}
+	
+	public void keyPressed() {
 		
 	}
 	
