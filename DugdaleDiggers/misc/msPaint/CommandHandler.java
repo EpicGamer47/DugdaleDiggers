@@ -14,7 +14,7 @@ import processing.core.PImage;
  * use the method headers so that the actual PApplet you have works
  * pl shelp make them
  */
-public abstract class CommandHandler {
+public class CommandHandler {
 	
 	private int x1, x2, y1, y2;
 	private PImage currentField;
@@ -56,7 +56,7 @@ public abstract class CommandHandler {
 	 * Starts a command.
 	 * @command command the command to use
 	 */
-	public void newCommand(String command) {
+	public void newCommand(String command, String... args) {
 		switch (command) {
 		case "undo":
 			undo();
@@ -64,6 +64,9 @@ public abstract class CommandHandler {
 		case "redo":
 			undo();
 			break;
+		case "save":
+			save();
+			
 		
 		default:
 			throw new InvalidParameterException("\"" + command + "\" is not a valid command.");
@@ -104,7 +107,7 @@ public abstract class CommandHandler {
 	/**
 	 * Saves the draw area to the output file
 	 */
-	public void save(String path) {
+	public void save() {
 		parent.selectOutput("Save to file: ", "saveCallback");
 	}
 	
