@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
 
 /** 
  * please note that this is not fully implemented
@@ -16,11 +17,12 @@ import processing.core.PGraphics;
 public abstract class CommandHandler {
 	
 	private int x1, x2, y1, y2;
-	private PGraphics currentField;
-	private PGraphics currentCommand;
+	private PImage currentField;
+	private PGraphics currentCommandField;
+	private String currentCommand;
 	private PApplet parent;
-	private ArrayDeque<PGraphics> history;
-	private ArrayDeque<PGraphics> future;
+	private ArrayDeque<PImage> history;
+	private ArrayDeque<PImage> future;
 
 	/**
 	 * Takes in a PApplet and a bounding box for the paint area.
@@ -37,7 +39,10 @@ public abstract class CommandHandler {
 		this.x2 = x2;
 		this.y2 = y2;
 		
-		currentField = parent.createGraphics(x2 - x1, y2 - y1); // no way to call it statically
+		currentField = new PImage(x2 - x1, y2 - y1);
+		
+		currentCommandField = parent.createGraphics(x2 - x1, y2 - y1); // no way to call it statically
+		currentCommandField.beginDraw();
 	}
 	
 	/**
@@ -49,27 +54,34 @@ public abstract class CommandHandler {
 	
 	/**
 	 * Starts a command.
+	 * @command command the command to use
 	 */
-	public void command(String command, Point2D point) {
+	public void newCommand(String command) {
 		switch (command) {
 		case "undo":
+			undo();
+			break;
+		case "redo":
+			undo();
+			break;
 		
 		default:
 			throw new InvalidParameterException("\"" + command + "\" is not a valid command.");
 		}
+		
+		currentCommand = command;
 	}
 	
 	/**
-	 * 
-	 * @param point the click
+	 * Updates the command (mouse moved, etc);
 	 */
-	public void update(Point2D point) {
-		switch (command) {
+	public void update() {
+		switch (currentCommand) {
 		case "undo":
 		
 		default:
-			throw new InvalidParameterException("\"" + command + "\" is not a valid command.");
-		}
+			throw new InvalidParameterException("\"" + currentCommand + "\" is not a valid command.");
+		} // should never run here but meh
 	}
 	
 	/**
@@ -77,8 +89,15 @@ public abstract class CommandHandler {
 	 * Call when command is done.
 	 */
 	public void finalize() {
-		currentField.image(currentCommand, 0, 0);
-		history.push((PGraphics) currentField.copy());
+		PGraphics temp = parent.createGraphics(x2 - x1, y2 - y1);
+		temp.beginDraw();
+		temp.image(currentField, 0, 0);
+		temp.image(currentCommandField, 0, 0);
+		currentField = temp.get();
+		temp.endDraw();
+		
+		
+		history.push(currentField.copy());
 		future.clear();
 	}
 	
