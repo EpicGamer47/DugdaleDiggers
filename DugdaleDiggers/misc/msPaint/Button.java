@@ -22,13 +22,7 @@ public abstract class Button {
 	/**
 	 * Draws the button.
 	 */
-	public void draw() {
-		parent.fill(255);
-		parent.stroke(0);
-		parent.strokeWeight(1);
-		parent.rect(x1, y1, w, h);
-		drawInside();
-	}
+	protected abstract void draw();
 	
 	/**
 	 * Tests if the button is clicked on, and runs click() if it is.
@@ -44,9 +38,4 @@ public abstract class Button {
 	 * Executed when button is clicked on.
 	 */
 	protected abstract void click();
-	
-	/**
-	 * Executed in draw() to draw the customized parts of the button.
-	 */
-	protected abstract void drawInside();
 }
